@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> cellObjectList;
-    [SerializeField] private GameObject cellObjectPrefab;
+    [SerializeField] private List<ObstacleCell> cellObjectList;
+    [SerializeField] private ObstacleCell cellObjectPrefab;
     private float speed;
     private Vector2 moveDirection;
     private int cellCount;
@@ -42,12 +42,15 @@ public class Obstacle : MonoBehaviour
         this.rb.velocity = moveDirection.normalized * speed;
     }
     public void DisableRandomCells(List<int> cellIndices){
-        cellIndices.ForEach(x => this.cellObjectList[x].gameObject.SetActive(false));
+        cellIndices.ForEach(x =>{
+            var cell = this.cellObjectList[x];
+            cell.SetAsScorer();
+        });
     }
 
     private void SpawnWalls(){
         var wallSize = this.screenWidth / (float)cellCount;
-        cellObjectList.ForEach(x => Destroy(x));
+        cellObjectList.ForEach(x => Destroy(x.gameObject));
         cellObjectList.Clear();
         var pos = 0f;
         for(int i = 0; i < cellCount; i++){
@@ -55,6 +58,7 @@ public class Obstacle : MonoBehaviour
             cell.transform.SetParent(this.transform);
             cell.transform.localScale = Vector2.one * wallSize;
             cell.transform.localPosition = new Vector2(pos + wallSize / 2, 0);
+            cell.SetAsWall();
             cellObjectList.Add(cell);
             pos += wallSize;
         }

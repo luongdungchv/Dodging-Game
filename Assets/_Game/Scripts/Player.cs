@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
             GameManager.Instance.ReduceLife();
             TriggerInvincible();
         }
+        else if(other.tag == "Scorer"){
+            GameManager.Instance.AddScore();
+        }
     }
 
     private void TriggerInvincible(){
