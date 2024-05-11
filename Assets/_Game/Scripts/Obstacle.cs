@@ -11,7 +11,7 @@ public class Obstacle : MonoBehaviour
     private int cellCount;
     private float screenWidth, xPos;
 
-    private Rigidbody rb => this.GetComponent<Rigidbody>();
+    private Rigidbody2D rb => this.GetComponent<Rigidbody2D>();
 
     public void InitializeProperties(float speed, Vector2 moveDirection, int cellCount, float screenWidth)
     {
@@ -30,16 +30,16 @@ public class Obstacle : MonoBehaviour
         this.gameObject.SetActive(true);
         this.rb.velocity = moveDirection.normalized * speed;
     }
-    public void StopMoving()
+    public void StopMoving(bool disable = true)
     {
-        this.gameObject.SetActive(false);
+        if(disable) this.gameObject.SetActive(false);
         this.rb.velocity = Vector2.zero;
         cellObjectList.ForEach(x => x.gameObject.SetActive(true));
     }
     public void SetSpeed(float speed)
     {
         this.speed = speed;
-        this.StartMoving();
+        this.rb.velocity = moveDirection.normalized * speed;
     }
     public void DisableRandomCells(List<int> cellIndices){
         cellIndices.ForEach(x => this.cellObjectList[x].gameObject.SetActive(false));
@@ -52,8 +52,9 @@ public class Obstacle : MonoBehaviour
         var pos = 0f;
         for(int i = 0; i < cellCount; i++){
             var cell = Instantiate(cellObjectPrefab);
+            cell.transform.SetParent(this.transform);
             cell.transform.localScale = Vector2.one * wallSize;
-            cell.transform.localPosition = new Vector2(pos, 0);
+            cell.transform.localPosition = new Vector2(pos + wallSize / 2, 0);
             cellObjectList.Add(cell);
             pos += wallSize;
         }
