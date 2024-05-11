@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldUtils : MonoBehaviour
+namespace DL.Utils
 {
-    // Start is called before the first frame update
-    void Start()
+    public static class WorldUtils
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public static Vector2 GetOrthoCameraWorldSpaceSize(Camera cam, RectTransform refCanvas){
+            if(cam.orthographic){
+                var zoom = cam.orthographicSize;
+                var ratio = refCanvas.sizeDelta.y / refCanvas.sizeDelta.x;
+                var worldHeight = zoom * 2;
+                var worldWidth = worldHeight / ratio;
+                return new Vector2(worldWidth, worldHeight);
+            }
+            return -Vector2.one;
+        }
     }
 }
