@@ -8,7 +8,7 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
 {
     [SerializeField] private Queue<Obstacle> obstaclePool;
     [SerializeField] private ParallaxMapMover parallaxMover;
-    
+
     [Header("Level Properties")]
     [SerializeField] private int cellCount;
     [SerializeField] private float thresholdOffset;
@@ -27,23 +27,27 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
     private float currentSpeed, currentObsInterval;
     private Coroutine moveCoroutine, speedCoroutine;
 
-    private void Start(){
+    private void Start()
+    {
         //GameManager.Instance.OnGameOver.AddListener(HandleGameOver);
         this.Init();
-        this.StartMoving();
+        //this.StartMoving();
     }
 
-    private void Update(){
-        if(activeObstacles.Count == 0) return;
+    private void Update()
+    {
+        if (activeObstacles.Count == 0) return;
         var topObstacle = activeObstacles.Peek();
-        if(topObstacle.transform.position.y > upperBound){
+        if (topObstacle.transform.position.y > upperBound)
+        {
             topObstacle = activeObstacles.Dequeue();
             topObstacle.StopMoving();
             this.obstaclePool.Enqueue(topObstacle);
         }
     }
 
-    public void Init(){
+    public void Init()
+    {
         var worldCameraSize = DL.Utils.WorldUtils.GetOrthoCameraWorldSpaceSize(Camera.main, UIController.Instance.RefCanvas);
 
         this.upperBound = worldCameraSize.y / 2 + thresholdOffset;
@@ -51,7 +55,8 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
         this.rightBound = worldCameraSize.x / 2;
         this.leftBound = -worldCameraSize.x / 2;
 
-        obstaclePool.ForEach(x => {
+        obstaclePool.ForEach(x =>
+        {
             x.InitializeProperties(initialMoveSpeed, moveUp ? Vector2.up : Vector2.down, cellCount, worldCameraSize.x);
             x.transform.position = new Vector2(-worldCameraSize.x / 2, 0);
             x.gameObject.SetActive(false);
@@ -62,21 +67,28 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
 
         activeObstacles = new Queue<Obstacle>();
     }
-    public void StartMoving(){
+    public void StartMoving()
+    {
         this.moveCoroutine = StartCoroutine(IEMove());
         this.speedCoroutine = StartCoroutine(IEIncreaseDifficulty());
+    }
+    public void StartParallax()
+    {
         parallaxMover.SetDirection(moveUp ? Vector2.up : Vector2.down);
         parallaxMover.SetSpeed(this.currentSpeed);
         parallaxMover.StartMoving();
     }
-    
-    private IEnumerator IEMove(){
-        while(true){
+
+    private IEnumerator IEMove()
+    {
+        while (true)
+        {
             var obstacle = this.obstaclePool.Dequeue();
 
             var disableCellCount = Random.Range(1, this.maxHoleCount + 1);
             var list = new List<int>();
-            for(int i = 0; i < disableCellCount; i++){
+            for (int i = 0; i < disableCellCount; i++)
+            {
                 list.Add(Random.Range(0, this.cellCount));
             }
 
@@ -89,15 +101,17 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
             yield return new WaitForSeconds(this.currentObsInterval);
         }
     }
-    private IEnumerator IEIncreaseDifficulty(){
-        while(true){
+    private IEnumerator IEIncreaseDifficulty()
+    {
+        while (true)
+        {
             yield return new WaitForSeconds(this.incrementInterval);
 
             this.currentSpeed += speedIncrement;
             this.currentObsInterval -= obsIntervalDecrement;
 
-            if(currentSpeed > maxObstacleSpeed) currentSpeed = maxObstacleSpeed;
-            if(currentObsInterval < minObsInterval) currentObsInterval = minObsInterval;
+            if (currentSpeed > maxObstacleSpeed) currentSpeed = maxObstacleSpeed;
+            if (currentObsInterval < minObsInterval) currentObsInterval = minObsInterval;
 
             this.obstaclePool.ForEach(x => x.SetSpeed(currentSpeed));
             this.activeObstacles.ForEach(x => x.SetSpeed(currentSpeed));

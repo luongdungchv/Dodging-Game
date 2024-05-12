@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Canvas refCanvas;
     [SerializeField] private TMP_Text textScore, textLife;
     [SerializeField] private GameObject replayPanel;
+    [SerializeField] private GameObject startPanel;
     public RectTransform RefCanvas => this.refCanvas.GetComponent<RectTransform>();
 
     private void Awake(){
@@ -35,6 +36,10 @@ public class UIController : MonoBehaviour
     }
     public void ShowReplay(){
         this.replayPanel.gameObject.SetActive(true);
+    }
+    public void StartPlaying(){
+        startPanel.gameObject.SetActive(false);
+        GameManager.Instance.StartCountDown();
     }
 
 }

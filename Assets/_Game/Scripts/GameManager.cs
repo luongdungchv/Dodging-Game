@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private int lifeCount, score;
     [SerializeField] private int scorePerCoin, scorePerChest;
+    [SerializeField] private ObstacleManager obstacleManager;
+    [SerializeField] private CountDown countDown;
     public static GameManager Instance;
     [HideInInspector] public UnityEvent OnGameOver;
     private int currentLives;
@@ -43,6 +45,14 @@ public class GameManager : MonoBehaviour
         this.OnGameOver?.Invoke();
         Time.timeScale = 0;
         
+    }
+    public void StartGame(){
+        this.obstacleManager.StartMoving();
+    }
+    public void StartCountDown(){
+        this.obstacleManager.StartParallax();
+        countDown.gameObject.SetActive(true);
+        Player.Instance.EnableAnimation();
     }
     
     

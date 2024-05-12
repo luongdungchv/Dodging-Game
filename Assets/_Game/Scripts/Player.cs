@@ -57,4 +57,7 @@ public class Player : MonoBehaviour
         currentAnimSpd += animSpeedIncrement;
         animator.SetFloat("animSpd", currentAnimSpd);
     }
+    public void EnableAnimation(){
+        this.animator.enabled = true;
+    }
 }
