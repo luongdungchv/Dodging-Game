@@ -7,6 +7,7 @@ using UnityEngine;
 public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
 {
     [SerializeField] private Queue<Obstacle> obstaclePool;
+    [SerializeField] private ParallaxMapMover parallaxMover;
     
     [Header("Level Properties")]
     [SerializeField] private int cellCount;
@@ -64,6 +65,9 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
     public void StartMoving(){
         this.moveCoroutine = StartCoroutine(IEMove());
         this.speedCoroutine = StartCoroutine(IEIncreaseDifficulty());
+        parallaxMover.SetDirection(moveUp ? Vector2.up : Vector2.down);
+        parallaxMover.SetSpeed(this.currentSpeed);
+        parallaxMover.StartMoving();
     }
     
     private IEnumerator IEMove(){
@@ -84,12 +88,16 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
     private IEnumerator IEIncreaseDifficulty(){
         while(true){
             yield return new WaitForSeconds(this.incrementInterval);
+
             this.currentSpeed += speedIncrement;
             this.currentObsInterval -= obsIntervalDecrement;
+
             if(currentSpeed > maxObstacleSpeed) currentSpeed = maxObstacleSpeed;
             if(currentObsInterval < minObsInterval) currentObsInterval = minObsInterval;
+
             this.obstaclePool.ForEach(x => x.SetSpeed(currentSpeed));
             this.activeObstacles.ForEach(x => x.SetSpeed(currentSpeed));
+            parallaxMover.SetSpeed(currentSpeed);
         }
     }
     private void HandleGameOver(){

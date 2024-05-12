@@ -1,0 +1,3 @@
+char.png,170,196,4
+bt_spund.png,138,138,2
+count.png,164,210,3
