@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int lifeCount, score;
-    [SerializeField] private int scorePerPass;
+    [SerializeField] private int scorePerCoin, scorePerChest;
     public static GameManager Instance;
     [HideInInspector] public UnityEvent OnGameOver;
     private int currentLives;
@@ -31,7 +31,11 @@ public class GameManager : MonoBehaviour
         this.uiController.UpdateLife(this.lifeCount);
     }
     public void AddScore(){
-        this.score += scorePerPass;
+        this.score += scorePerCoin;
+        this.uiController.UpdateScore(this.score);
+    }
+    public void AddScoreChest(){
+        this.score += scorePerChest;
         this.uiController.UpdateScore(this.score);
     }
     public void GameOver()

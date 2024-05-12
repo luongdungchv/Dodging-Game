@@ -21,14 +21,14 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
     [SerializeField] private float initialMoveSpeed, speedIncrement;
     [SerializeField] private float maxObstacleSpeed;
     [SerializeField] private int maxHoleCount;
-    private Queue<Obstacle> activeObstacles;
+    [SerializeField] private Queue<Obstacle> activeObstacles;
 
     private float upperBound, lowerBound, rightBound, leftBound;
     private float currentSpeed, currentObsInterval;
     private Coroutine moveCoroutine, speedCoroutine;
 
     private void Start(){
-        GameManager.Instance.OnGameOver.AddListener(HandleGameOver);
+        //GameManager.Instance.OnGameOver.AddListener(HandleGameOver);
         this.Init();
         this.StartMoving();
     }
@@ -73,15 +73,19 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
     private IEnumerator IEMove(){
         while(true){
             var obstacle = this.obstaclePool.Dequeue();
+
             var disableCellCount = Random.Range(1, this.maxHoleCount + 1);
             var list = new List<int>();
             for(int i = 0; i < disableCellCount; i++){
                 list.Add(Random.Range(0, this.cellCount));
             }
+
             obstacle.DisableRandomCells(list);
             obstacle.StartMoving();
             obstacle.transform.position = new Vector2(leftBound, lowerBound);
+
             this.activeObstacles.Enqueue(obstacle);
+
             yield return new WaitForSeconds(this.currentObsInterval);
         }
     }
@@ -98,9 +102,12 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
             this.obstaclePool.ForEach(x => x.SetSpeed(currentSpeed));
             this.activeObstacles.ForEach(x => x.SetSpeed(currentSpeed));
             parallaxMover.SetSpeed(currentSpeed);
+
+            Player.Instance.IncreaseAnimSpeed();
         }
     }
     private void HandleGameOver(){
+        Time.timeScale = 0;
         this.obstaclePool.ForEach(x => x.StopMoving(false));
         this.activeObstacles.ForEach(x => x.StopMoving(false));
     }

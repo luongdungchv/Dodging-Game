@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float invincibleFXInterval;
+    public static Player Instance;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Animator animator;
+    [SerializeField] private float invincibleFXInterval;
     [SerializeField] private float invincibleDuration;
     [SerializeField] private float relativeScreenHeight;
-
+    [SerializeField] private float animSpeedIncrement;
+ 
     private bool isInvincible;
+    private float currentAnimSpd = 1;
+
+    private void Awake(){
+        Instance = this;
+    }
 
     private void Start(){
         this.transform.localScale = Vector3.one * relativeScreenHeight / UIController.Instance.RefCanvas.sizeDelta.y;
@@ -17,13 +25,20 @@ public class Player : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other) {
         if(this.isInvincible) return;
+        Debug.Log(other.tag);
         if(other.tag == "Obstacle"){
             Debug.Log(other);
             GameManager.Instance.ReduceLife();
             TriggerInvincible();
         }
-        else if(other.tag == "Scorer"){
+        else if(other.tag == "Coin"){
             GameManager.Instance.AddScore();
+            other.GetComponentInParent<ObstacleCell>().SetAsEmpty();
+            Debug.Log("coin");
+        }
+        else if(other.tag == "Chest"){
+            GameManager.Instance.AddScoreChest();
+            other.GetComponentInParent<ObstacleCell>().SetAsEmpty();
         }
     }
 
@@ -37,5 +52,9 @@ public class Player : MonoBehaviour
             this.spriteRenderer.enabled = true;
             this.isInvincible = false;
         }, this.invincibleDuration);
+    }
+    public void IncreaseAnimSpeed(){
+        currentAnimSpd += animSpeedIncrement;
+        animator.SetFloat("animSpd", currentAnimSpd);
     }
 }

@@ -42,10 +42,13 @@ public class Obstacle : MonoBehaviour
         this.rb.velocity = moveDirection.normalized * speed;
     }
     public void DisableRandomCells(List<int> cellIndices){
+        this.cellObjectList.ForEach(x => x.SetAsWall());
         cellIndices.ForEach(x =>{
             var cell = this.cellObjectList[x];
-            cell.SetAsScorer();
+            cell.SetAsEmpty();
         });
+        var randomIndex = Random.Range(0, cellIndices.Count);
+        this.cellObjectList[cellIndices[randomIndex]].DetermineScorer();
     }
 
     private void SpawnWalls(){

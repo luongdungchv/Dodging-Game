@@ -16,10 +16,10 @@ public class ParallaxMapMover : MonoBehaviour
         this.Init();
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         if(this.isMove){
-            obj1.transform.Translate(direction * speed * Time.deltaTime, Space.World);
-            obj2.transform.Translate(direction * speed * Time.deltaTime, Space.World);
+            obj1.transform.Translate(direction * speed * Time.fixedDeltaTime, Space.World);
+            obj2.transform.Translate(direction * speed * Time.fixedDeltaTime, Space.World);
             if(obj1.transform.position.y >= upperBound){
                 obj1.transform.position -= (Vector3)(Vector2.up * upperBound * 2);
             }
