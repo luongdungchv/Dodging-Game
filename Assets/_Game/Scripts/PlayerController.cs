@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour, IDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        var move = eventData.delta * sensitivity / 100 * Time.deltaTime;
+        var move = eventData.delta * sensitivity / 100 * Time.deltaTime / UIController.Instance.RefCanvas.GetComponent<Canvas>().scaleFactor;
         move.y = 0;
         var playerPos = player.transform.position;
         playerPos += (Vector3)move;

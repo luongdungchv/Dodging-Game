@@ -13,6 +13,7 @@ public class TOSPanel : MonoBehaviour
     {
         tosBtn.onClick.AddListener(OpenURL);
         acceptBtn.onClick.AddListener(Accept);
+        
     }
 
     public void Show()
@@ -26,9 +27,9 @@ public class TOSPanel : MonoBehaviour
     public void Accept()
     {
         this.Hide();
-        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
         PlayerPrefs.SetInt("TOS", 1);
-        SceneManager.LoadScene("MainMenu");
+        this.gameObject.SetActive(false);
+        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
     }
 
     public void OpenURL()

@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         if(currentLives <= 0){
             this.GameOver();
         }
-        this.uiController.UpdateLife(this.lifeCount);
+        this.uiController.UpdateLife(this.currentLives);
     }
     public void AddScore(){
         this.score += scorePerCoin;
@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         this.OnGameOver?.Invoke();
+        Time.timeScale = 0;
+        
     }
     
     

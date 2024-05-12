@@ -106,9 +106,4 @@ public class ObstacleManager : Sirenix.OdinInspector.SerializedMonoBehaviour
             Player.Instance.IncreaseAnimSpeed();
         }
     }
-    private void HandleGameOver(){
-        Time.timeScale = 0;
-        this.obstaclePool.ForEach(x => x.StopMoving(false));
-        this.activeObstacles.ForEach(x => x.StopMoving(false));
-    }
 }
