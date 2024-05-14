@@ -23,21 +23,27 @@ public class UIController : MonoBehaviour
         this.textLife.text = lives.ToString();
     }
     public void Restart(){
+        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
         SceneManager.LoadScene("Gameplay");
+        Time.timeScale = 1;
     }
     public void MainMenu(){
         SceneManager.LoadScene("MainMenu");
     }
     public void Pause(){
+        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
         Time.timeScale = 0;
     }
     public void Resume(){
+        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
+        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
         Time.timeScale = 1;
     }
     public void ShowReplay(){
         this.replayPanel.gameObject.SetActive(true);
     }
     public void StartPlaying(){
+        SoundManager.instance.PlayOneShot(SFX.Btn_Click);
         startPanel.gameObject.SetActive(false);
         GameManager.Instance.StartCountDown();
     }

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int scorePerCoin, scorePerChest;
     [SerializeField] private ObstacleManager obstacleManager;
     [SerializeField] private CountDown countDown;
+    [SerializeField] private TOSPanel tosPanel;
     public static GameManager Instance;
     [HideInInspector] public UnityEvent OnGameOver;
     private int currentLives;
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         this.OnGameOver = new UnityEvent();
+        tosPanel.gameObject.SetActive(PlayerPrefs.GetInt("TOS", 0) == 0);
+        Application.targetFrameRate = 60;
     }
     private void Start(){
         currentLives = lifeCount;
@@ -44,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         this.OnGameOver?.Invoke();
         Time.timeScale = 0;
-        
+        UIController.Instance.ShowReplay();
     }
     public void StartGame(){
         this.obstacleManager.StartMoving();

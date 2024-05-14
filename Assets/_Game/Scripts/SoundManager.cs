@@ -28,5 +28,5 @@ public class SoundManager : SerializedMonoBehaviour
     }
 }
 public enum SFX{
-    Btn_Click, Coin_Collect, Chest_Collect, Hurt
+    Btn_Click, Coin_Collect, Chest_Collect, Hurt, Countdown, Countdown_Done
 }
