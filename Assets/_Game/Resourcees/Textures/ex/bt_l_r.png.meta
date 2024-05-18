@@ -132,12 +132,12 @@ TextureImporter:
       name: bt_l_r_0
       rect:
         serializedVersion: 2
-        x: 23
-        y: 33
-        width: 122
-        height: 102
+        x: 8
+        y: 23
+        width: 147
+        height: 123
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -153,12 +153,12 @@ TextureImporter:
       name: bt_l_r_1
       rect:
         serializedVersion: 2
-        x: 191
-        y: 33
-        width: 122
-        height: 102
+        x: 178
+        y: 22
+        width: 147
+        height: 123
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,14 +173,16 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 18cdd5ecf6d019a45a06aafb14b39601
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      bt_l_r_0: 4483061614919296057
+      bt_l_r_1: -4049940694491576975
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

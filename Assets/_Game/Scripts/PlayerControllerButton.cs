@@ -4,31 +4,43 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class PlayerControllerButton : MonoBehaviour, IPointerDownHandler, IPointerExitHandler, IPointerUpHandler
+public class PlayerControllerButton : MonoBehaviour, IPointerDownHandler, IPointerExitHandler, IDropHandler, IDragHandler
 {
+    [SerializeField] private string debugString;
     private UnityAction Callback;
     private bool holding;
+    private PointerEventData currentEventData;
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        holding = true;
+        this.currentEventData = eventData;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        holding = false;
+
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        holding = false;
+        
     }
 
     private void Update(){
-        if(holding) this.Callback?.Invoke();
+        if(currentEventData == null) return;
+        if(currentEventData.pointerDrag != null && currentEventData.pointerDrag == this.gameObject) this.Callback?.Invoke();
     }
 
     public void SetCallback(UnityAction callback){
         this.Callback = callback;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
     }
 }

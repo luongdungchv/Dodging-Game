@@ -27,14 +27,24 @@ public class PlayerController : MonoBehaviour, IDragHandler
         }, 0);
         mainCam = Camera.main;
 
-        leftBtn.SetCallback(() => {
+        leftBtn.SetCallback(() =>
+        {
             player.transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
+            var playerPos = player.transform.position;
+            if (playerPos.x < leftBound) playerPos.x = leftBound;
+            if (playerPos.x > rightBound) playerPos.x = rightBound;
+            player.transform.position = playerPos;
         });
-        rightBtn.SetCallback(() => {
+        rightBtn.SetCallback(() =>
+        {
             player.transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
+            var playerPos = player.transform.position;
+            if (playerPos.x < leftBound) playerPos.x = leftBound;
+            if (playerPos.x > rightBound) playerPos.x = rightBound;
+            player.transform.position = playerPos;
         });
 
-    } 
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
