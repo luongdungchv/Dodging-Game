@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class PlayerControllerButton : MonoBehaviour, IPointerDownHandler, IPointerExitHandler, IDropHandler, IDragHandler
+public class PlayerControllerButton : MonoBehaviour, IPointerDownHandler, IPointerExitHandler, IDropHandler, IDragHandler, IPointerEnterHandler
 {
     [SerializeField] private string debugString;
     private UnityAction Callback;
@@ -19,6 +19,11 @@ public class PlayerControllerButton : MonoBehaviour, IPointerDownHandler, IPoint
     public void OnPointerExit(PointerEventData eventData)
     {
 
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("Enter");
     }
 
     public void OnPointerUp(PointerEventData eventData)
